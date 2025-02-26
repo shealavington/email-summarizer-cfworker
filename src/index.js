@@ -1,4 +1,3 @@
-import { EmailMessage } from "cloudflare:email";
 import { createMimeMessage } from "mimetext";
 
 const PostalMime = require("postal-mime");
@@ -38,20 +37,6 @@ export default {
       });
     }
 
-    const msg = createMimeMessage();
-    msg.setSender({ name: "Auto-replier", addr: event.to });
-    msg.setRecipient(event.from);
-    msg.setSubject(`Re: ${parsedEmail.subject}`);
-    msg.setHeader("In-Reply-To", parsedEmail.messageId);
-    msg.addMessage({
-      contentType: "text/plain",
-      data: `This is an automated reply to your email with the subject ${parsedEmail.subject}.
-Number of attachments: ${parsedEmail.attachments.length}.
-
-good bye.`,
-    });
-
-    var message = new EmailMessage(event.to, event.from, msg.asRaw());
-    await event.reply(message);
+    return
   },
 };
