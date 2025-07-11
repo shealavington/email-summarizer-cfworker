@@ -6,8 +6,7 @@ const PostalMime = require("postal-mime");
  * Variables
  */
 // @cf/meta/llama-3-8b-instruct
-// @cf/mistral/mistral-7b-instruct-v0.1
-const MODEL_NAME = "@cf/facebook/bart-large-cnn";
+const MODEL_NAME = "@cf/mistral/mistral-7b-instruct-v0.1";
 const BANTRY = true;
 const ENABLE_URGENCY_DETECTION = true;
 
