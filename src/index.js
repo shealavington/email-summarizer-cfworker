@@ -86,7 +86,9 @@ export default {
 
     // Summarization
     console.log('Hook', env.WEBHOOK_URL)
-    console.log('Processing Email', parsedEmail.subject)
+    console.log('Processing from', parsedEmail.from.address)
+    console.log('Processing subject', parsedEmail.subject)
+    console.log('Processing body', parsedEmail.text)
     const emailSummary = await summarizeEmail(
       env,
       parsedEmail.from.address,
