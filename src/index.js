@@ -85,12 +85,14 @@ export default {
     const parsedEmail = await parser.parse(rawEmail);
 
     // Summarization
+    console.log('Processing Email', parsedEmail.subject)
     const emailSummary = await summarizeEmail(
       env,
       parsedEmail.sender,
       parsedEmail.subject,
       parsedEmail.text,
     );
+    console.log('Summarized To', emailSummary)
     await notifyHook(env, emailSummary)
 
     // Helpful Parameters
