@@ -1,31 +1,13 @@
 import { createMimeMessage } from "mimetext";
-
 const PostalMime = require("postal-mime");
 
-/**
- * Variables
- */
 const MODEL_NAME = "@cf/meta/llama-3-8b-instruct";
-const ENABLE_URGENCY_DETECTION = true;
 
 /**
  * Provide email information to an AI system for summarisation.
  */
 async function summarizeEmail(env, subject, body) {
-  // --- Urgency detection ---
-  let urgencyPrefix = "";
-  if (ENABLE_URGENCY_DETECTION) {
-    const lower = body.toLowerCase();
-    if (["urgent", "asap", "immediately", "deadline", "important", "critical"].some(w => lower.includes(w))) {
-      urgencyPrefix = "📬🔴 URGENT:\n";
-    } else if (lower.includes("reminder") || lower.includes("action required")) {
-      urgencyPrefix = "📬🟡 Reminder:\n";
-    } else {
-      urgencyPrefix = "📬🟢\n";
-    }
-  }
 
-  // --- AI Summarization ---
   const ai = await env.AI.run(MODEL_NAME, {
     messages: [
       {
@@ -57,7 +39,7 @@ Just mock it lovingly and keep it snappy. Never write a reply to the original em
     throw new Error('Err: No AI summary was generated for: ' + subject);
   }
   
-  return `${urgencyPrefix}${summary}\n\nSubject: ${subject}`;
+  return `📬 ${summary}\n\nSubject: ${subject}`;
 }
 
 /**
