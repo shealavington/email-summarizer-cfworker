@@ -12,7 +12,7 @@ const ENABLE_URGENCY_DETECTION = true;
 /**
  * Provide email information to an AI system for summarisation.
  */
-async function summarizeEmail(env, fromSender, subject, body) {
+async function summarizeEmail(env, subject, body) {
   // --- Urgency detection ---
   let urgencyPrefix = "";
   if (ENABLE_URGENCY_DETECTION) {
@@ -31,9 +31,9 @@ async function summarizeEmail(env, fromSender, subject, body) {
     messages: [
       {
         role: "system",
-        content: BANTRY 
-          ? "You are a sarcastic personal assistant — a sarcastic but loyal assistant who summarizes emails for your boss in English. Include emojis, keep it light and snappy, slightly cheeky, and mildly mocking, with a personality."
-          : "You are a loyal personal assistant who professionally summarizes emails for your boss in plain English. Find the key criteria that's important but keep it snappy.",
+        content: BANTRY
+          ? "You are a sarcastic but loyal personal assistant who jokingly summarizes emails in English. Include emojis, short and snappy, keep it light, slightly cheeky and sometimes mean, and mildly mocking, with a personality."
+          : "You are a loyal personal assistant who professionally summarizes emails for your boss in plain English. Find the key criteria that's important but keep it short and snappy.",
       },
       {
         role: "user",
@@ -42,8 +42,13 @@ async function summarizeEmail(env, fromSender, subject, body) {
     ],
   });
 
-  const summary = ai.response?.trim() || "No summary generated.";
-  return `📬 ${urgencyPrefix}${summary}\n\nFrom: ${fromSender}\nSubject: ${subject}`;
+  const summary = ai.response?.trim();
+
+  if(!summary) {
+    throw new Error('No AI summary was generated');
+  }
+  
+  return `${urgencyPrefix}${summary}\n\nSubject: ${subject}`;
 }
 
 /**
@@ -85,16 +90,12 @@ export default {
     const parsedEmail = await parser.parse(rawEmail);
 
     // Summarization
-    console.log('Hook', env.WEBHOOK_URL)
-    console.log('Processing from', parsedEmail.from.address)
-    console.log('Processing subject', parsedEmail.subject)
-    console.log('Processing body', parsedEmail.text)
     const emailSummary = await summarizeEmail(
       env,
-      parsedEmail.from.address,
       parsedEmail.subject,
       parsedEmail.text,
     );
+    
     console.log('Summarized To', emailSummary)
     await notifyHook(env, emailSummary)
 
