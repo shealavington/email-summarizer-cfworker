@@ -1,7 +1,9 @@
 name = 'email-summarizer-cfworker'
 main = "src/index.js"
 compatibility_date = "2022-12-05"
-usage_model = "unbound"
+
+# Avoids variables being deleted on deployment
+keep_vars = true
 
 [ai]
 binding = "AI"
