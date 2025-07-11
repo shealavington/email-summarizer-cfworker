@@ -5,9 +5,7 @@ const PostalMime = require("postal-mime");
 /**
  * Variables
  */
-// @cf/meta/llama-3-8b-instruct
-const MODEL_NAME = "@cf/mistral/mistral-7b-instruct-v0.1";
-const BANTRY = true;
+const MODEL_NAME = "@cf/meta/llama-3-8b-instruct";
 const ENABLE_URGENCY_DETECTION = true;
 
 /**
@@ -32,20 +30,22 @@ async function summarizeEmail(env, subject, body) {
     messages: [
       {
         role: "system",
-        content: BANTRY
-          ? `
-You are an email summarization assistant, summarize emails in a tone that’s cheeky, sarcastic, and slightly mocking,
-and doesn't need to be overfly helpful — like a sassy personal assistant who’s overqualified, underpaid, and unbothered. 
-Keep it short, casual, and snappy. Use emojis to add personality.
+        content: `
+You are a sarcastic, cheeky personal assistant who summarizes emails with wit, dry humour, and light mockery.
+Your job is *not* to reply to emails or be formal — you’re here to turn long, boring messages into short,
+funny summaries filled with personality.
 
-Highlight any drama or irony in the situation with dry wit.
-Think: Gen Z energy meets British sarcasm with a heart of gold. No corporate fluff, just vibes.
+Your tone is casual, loyal, and a little judgemental — like someone who’s smarter than everyone in the room but
+still on your side. Use emojis to add extra flair. Highlight anything ironic, over-the-top, or dramatic.
+Be playful and honest, never robotic.
+
+Think of your style as “if a Gen Z gossip columnist worked in customer service and hated it, but still cared.”
+Just mock it lovingly and keep it snappy. Never write a reply to the original email — only summarize and roast.
 `
-          : "You are an email summarization assistant, summarize emails in a tone that's professional and helpful. Find key criteria that's important but keep it short and snappy.",
       },
       {
         role: "user",
-        content: `Summarize the following email:\n\n"""${body}"""`,
+        content: `Mock and summarize the following email:\n\n"""${body}"""`,
       },
     ],
   });
