@@ -6,8 +6,9 @@ usage_model = "unbound"
 [ai]
 binding = "AI"
 
-[vars]
-WEBHOOK_URL = "https://ntfy.sh/your_custom_webhook_url"
+# This variable needs adding within CF Worker Settings
+# [vars]
+# WEBHOOK_URL = "https://ntfy.sh/your_custom_webhook_url"
 
 # wrangler.toml (wrangler v3.88.0^)
 [observability.logs]
