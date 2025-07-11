@@ -3,6 +3,9 @@ main = "src/index.js"
 compatibility_date = "2022-12-05"
 usage_model = "unbound"
 
+[vars]
+WEBHOOK_URL = "https://ntfy.sh/your_custom_webhook_url"
+
 # wrangler.toml (wrangler v3.88.0^)
 [observability.logs]
 enabled = true
