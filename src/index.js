@@ -28,6 +28,7 @@ async function summarizeEmail(env, subject, body) {
 
   // --- AI Summarization ---
   const ai = await env.AI.run(MODEL_NAME, {
+    lora: "@cf/facebook/bart-large-cnn",
     messages: [
       {
         role: "system",
@@ -37,7 +38,7 @@ async function summarizeEmail(env, subject, body) {
       },
       {
         role: "user",
-        content: `Email:\n\n"""${body}"""`,
+        content: `Summarize the following email:\n\n"""${body}"""`,
       },
     ],
   });
@@ -45,7 +46,7 @@ async function summarizeEmail(env, subject, body) {
   const summary = ai.response?.trim();
 
   if(!summary) {
-    console.log('Err: Email Body', body);
+    console.log("Err AIResult:", JSON.stringify(ai, null, 2));
     throw new Error('Err: No AI summary was generated for: ' + subject);
   }
   
