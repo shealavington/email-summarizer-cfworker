@@ -18,11 +18,11 @@ async function summarizeEmail(env, fromSender, subject, body) {
   if (ENABLE_URGENCY_DETECTION) {
     const lower = body.toLowerCase();
     if (["urgent", "asap", "immediately", "deadline", "important", "critical"].some(w => lower.includes(w))) {
-      urgencyPrefix = "🟥 URGENT:\n";
+      urgencyPrefix = "📬🔴 URGENT:\n";
     } else if (lower.includes("reminder") || lower.includes("action required")) {
-      urgencyPrefix = "🟨 Reminder:\n";
+      urgencyPrefix = "📬🟡 Reminder:\n";
     } else {
-      urgencyPrefix = "🟩 Chill:\n";
+      urgencyPrefix = "📬🟢\n";
     }
   }
 
@@ -43,7 +43,7 @@ async function summarizeEmail(env, fromSender, subject, body) {
   });
 
   const summary = ai.response?.trim() || "No summary generated.";
-  return `📬 New Email Summary:\n\nFrom: ${fromSender}\nSubject: ${subject}\n\n${urgencyPrefix}${summary}`;
+  return `📬 ${urgencyPrefix}${summary}\n\nFrom: ${fromSender}\nSubject: ${subject}`;
 }
 
 /**
@@ -85,10 +85,11 @@ export default {
     const parsedEmail = await parser.parse(rawEmail);
 
     // Summarization
+    console.log('Hook', env.WEBHOOK_URL)
     console.log('Processing Email', parsedEmail.subject)
     const emailSummary = await summarizeEmail(
       env,
-      parsedEmail.sender,
+      parsedEmail.from.address,
       parsedEmail.subject,
       parsedEmail.text,
     );
