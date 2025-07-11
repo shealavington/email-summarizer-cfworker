@@ -45,7 +45,8 @@ async function summarizeEmail(env, subject, body) {
   const summary = ai.response?.trim();
 
   if(!summary) {
-    throw new Error('No AI summary was generated');
+    console.log('Err: Email Body', body);
+    throw new Error('Err: No AI summary was generated for: ' + subject);
   }
   
   return `${urgencyPrefix}${summary}\n\nSubject: ${subject}`;
@@ -93,7 +94,7 @@ export default {
     const emailSummary = await summarizeEmail(
       env,
       parsedEmail.subject,
-      parsedEmail.text,
+      parsedEmail.text || parsedEmail.html,
     );
     
     console.log('Summarized To', emailSummary)
