@@ -5,8 +5,9 @@ const PostalMime = require("postal-mime");
 /**
  * Variables
  */
-const MODEL_NAME = "@cf/mistral/mistral-7b-instruct-v0.1";
-const LORA_NAME = "@cf/facebook/bart-large-cnn";
+// @cf/meta/llama-3-8b-instruct
+// @cf/mistral/mistral-7b-instruct-v0.1
+const MODEL_NAME = "@cf/facebook/bart-large-cnn";
 const BANTRY = true;
 const ENABLE_URGENCY_DETECTION = true;
 
@@ -29,7 +30,6 @@ async function summarizeEmail(env, subject, body) {
 
   // --- AI Summarization ---
   const ai = await env.AI.run(MODEL_NAME, {
-    lora: LORA_NAME,
     messages: [
       {
         role: "system",
