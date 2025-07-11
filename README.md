@@ -1,1 +1,1 @@
-# email_worker_parser
+# email-summarizer-cfworker
