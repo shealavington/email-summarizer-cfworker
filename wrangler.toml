@@ -3,6 +3,9 @@ main = "src/index.js"
 compatibility_date = "2022-12-05"
 usage_model = "unbound"
 
+[ai]
+binding = "AI"
+
 [vars]
 WEBHOOK_URL = "https://ntfy.sh/your_custom_webhook_url"
 
